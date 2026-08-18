@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iFujão - Ajude a encontrar este pet!</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 40px 20px; background-color: #f8f9fa; color: #333; }
+        .card { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .logo { font-size: 24px; font-weight: bold; color: #ff6b6b; margin-bottom: 20px; display: inline-block; text-decoration: none; }
+        .btn { display: inline-block; padding: 14px 28px; background-color: #ff6b6b; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin-top: 25px; transition: background 0.2s; }
+        .btn:hover { background-color: #fa5252; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #ff6b6b; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <a href="#" class="logo">🐾 iFujão</a>
+        <h2>Redirecionando para o aplicativo...</h2>
+        <p>Estamos abrindo os detalhes do pet desaparecido no seu dispositivo.</p>
+        
+        <div class="loader"></div>
+
+        <a id="app-link" class="btn" href="#">Abrir no Aplicativo</a>
+    </div>
+
+    <script>
+        // 1. Pega os parâmetros da URL (ex: ?id=123)
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('id');
+
+        if (petId) {
+            const deepLink = `ifujao://pet/${petId}`;
+            
+            // Configura o botão de segurança caso o redirecionamento automático falhe
+            document.getElementById('app-link').href = deepLink;
+
+            // 2. Tenta abrir o aplicativo automaticamente
+            window.location.href = deepLink;
+
+            // 3. Fallback: Se o usuário não tiver o app, você pode redirecionar para a Play Store após 3 segundos
+            setTimeout(() => {
+                // Opcional: window.location.href = "https://google.com...";
+            }, 3000);
+
+        } else {
+            document.querySelector('.card').innerHTML = "<h2>⚠️ Link inválido</h2><p>Não encontramos o identificador deste pet.</p>";
+        }
+    </script>
+</body>
+</html>
